@@ -1,20 +1,18 @@
 require 'net/http'
 require 'sinatra'
+require_relative 'schedule_downloader'
 
 class IceHouseCalendar < Sinatra::Base
 
   get '/' do
-    if not File.exists? 'tmp/schedule.pdf'
-      Net::HTTP.start("somedomain.net") do |http|
-        resp = http.get("/flv/sample/sample.flv")
-        open("sample.flv", "wb") do |file|
-          file.write(resp.body)
-        end
-      end
-      puts "Done."
+    file = 'tmp/schedule.pdf'
+    
+    if not File.exists? file
+      Dir.mkdir('tmp') unless Dir.exists? 'tmp'
+      ScheduleDownloader.download(URI('http://www.icehouse.com.au/images/stories/sports_programs_schedule.pdf'), file)
     end
 
+    send_file file, :type => '.pdf'
   end
-
   run! if app_file == $0
 end
