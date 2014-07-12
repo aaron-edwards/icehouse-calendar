@@ -5,4 +5,5 @@ gem 'sinatra'
 
 group :development, :test do
   gem 'rspec'
+  gem 'webmock'
 end
