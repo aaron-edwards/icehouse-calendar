@@ -8,6 +8,8 @@ class IceHouseCalendar < Sinatra::Base
     file = 'tmp/schedule.pdf'
     
     if not File.exists? file
+      puts 'redownloading'
+      
       Dir.mkdir('tmp') unless Dir.exists? 'tmp'
       ScheduleDownloader.download(URI('http://www.icehouse.com.au/images/stories/sports_programs_schedule.pdf'), file)
     end
